@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Inscription">
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,14 +18,16 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        tools:ignore="MissingClass">
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/Nom"
+                android:id="@+id/username"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 app:boxBackgroundColor="@color/white"
@@ -86,6 +89,7 @@
             android:layout_width="match_parent"
             android:layout_gravity="center_horizontal"
             app:cornerRadius="4dp"
+
             android:text="S'inscrire"
             android:layout_marginTop="30dp"/>
 

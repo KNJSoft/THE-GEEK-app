@@ -6,15 +6,15 @@
         android:title="notification"
         android:icon="@drawable/icon_loging"
         app:showAsAction="always"
-        android:id="@+id/notif"/>
+        android:id="@+id/log"/>
     <item
         android:title="profile"
         android:icon="@drawable/icon_signup"
         app:showAsAction="always"
-        android:id="@+id/profile"/>
+        android:id="@+id/account"/>
     <item
         android:title="settings"
-        android:id="@+id/settings"
+        android:id="@+id/set"
         android:icon="@drawable/icon_setting"
         app:showAsAction="always"/>
 </menu>
