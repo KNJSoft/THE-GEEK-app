@@ -11,7 +11,7 @@ class Start : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
         Handler(Looper.getMainLooper()).postDelayed({
-            Intent(this, Inscription::class.java).also {
+            Intent(this, Authentification::class.java).also {
                 startActivity(it)
             }
             finish()
