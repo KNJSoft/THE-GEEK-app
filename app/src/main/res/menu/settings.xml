@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_set"
+        android:title="Paramètres" />
+    <item
+        android:id="@+id/menu_mes"
+        android:title="Messages" />
+    <item
+        android:id="@+id/menu_cours"
+        android:title="Cours" />
+    <item
+        android:id="@+id/menu_logout"
+        android:title="Se Déconnecter" />
 
 </menu>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,19 +14,23 @@
         android:theme="@style/Theme.THEGEEK"
         tools:targetApi="31">
         <activity
-            android:name=".Anonyme"
-            android:label="THE-GEEK"
+            android:name=".Search"
             android:exported="false" />
+        <activity
+            android:name=".Anonyme"
+            android:exported="false"
+            android:label="THE-GEEK" />
         <activity
             android:name=".Settings"
             android:exported="false"
             android:label="Paramètres"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/home" />
         <activity
             android:name=".Authentification"
-            android:parentActivityName=".Anonyme"
             android:exported="false"
             android:label="Se Connecter"
+            android:parentActivityName=".Anonyme"
             android:theme="@style/home" />
         <activity
             android:name=".Inscription"

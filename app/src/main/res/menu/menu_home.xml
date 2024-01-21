@@ -4,9 +4,9 @@
 
     <item
         android:title="notification"
-        android:icon="@drawable/icon_notif"
+        android:icon="@drawable/icon_search"
         app:showAsAction="always"
-        android:id="@+id/notif"/>
+        android:id="@+id/search"/>
     <item
         android:title="profile"
         android:icon="@drawable/icon_profile"

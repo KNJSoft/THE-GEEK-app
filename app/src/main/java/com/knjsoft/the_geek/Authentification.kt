@@ -66,6 +66,7 @@ class Authentification : AppCompatActivity() {
                         startActivity(it)
                     }
                     finish()
+                    finish()
 
 
                 },
