@@ -49,13 +49,13 @@ class Inscription : AppCompatActivity() {
             jsonData.put("cpassword", cpassword)
             // Créer une requête POST vers l'API Django
             val queue = Volley.newRequestQueue(this)
-            val url = "http://192.168.1.106:8000/api/signup" // Remplacer par l'URL de votre API Django
+            val url = "http://192.168.1.106:8000/api/post/signup" // Remplacer par l'URL de votre API Django
             val request = JsonObjectRequest(Request.Method.POST, url, jsonData,
                 { response ->
                     val successMessage = response.getString("msg")
                     Log.d("SignupActivity", "Inscription réussie  django: $successMessage")
                     Log.d("SignupActivity", "Inscription réussie!")
-                    val toast = Toast.makeText(this, successMessage, Toast.LENGTH_SHORT)
+                    val toast = Toast.makeText(this, successMessage, Toast.LENGTH_SHORT*5)
                     toast.setGravity(Gravity.TOP or Gravity.CENTER, 0, resources.getDimensionPixelOffset(R.dimen.toast_margin_top))
                     val view = toast.view
                     if (view != null) {
@@ -77,7 +77,7 @@ class Inscription : AppCompatActivity() {
                             val jsonResponse = JSONObject(errorResponse)
                             val errorMessage = jsonResponse.getString("error")
                             Log.e("SignupActivity", "Erreur lors de l'inscription djannnnnngo: $errorMessage")
-                            val toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT)
+                            val toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT*5)
                             toast.setGravity(Gravity.TOP or Gravity.CENTER, 0, resources.getDimensionPixelOffset(R.dimen.toast_margin_top))
                             val view = toast.view
                             if (view != null) {
@@ -87,6 +87,16 @@ class Inscription : AppCompatActivity() {
                             toast.show()
                             // Utiliser le message d'erreur comme vous le souhaitez
                         } catch (e: JSONException) {
+                            //debut except
+                            val toast = Toast.makeText(this, "La connexion au serveur a échouer!!!", Toast.LENGTH_SHORT*5)
+                            toast.setGravity(Gravity.TOP or Gravity.CENTER, 0, resources.getDimensionPixelOffset(R.dimen.toast_margin_top))
+                            val view = toast.view
+                            if (view != null) {
+
+                                view.setBackgroundColor(Color.RED)
+                            }
+                            toast.show()
+                            //fin
                             Log.e("SignupActivity", "Erreur lors de l'analyse de la réponse JSON : $e")
                         }
                     }
@@ -115,6 +125,7 @@ class Inscription : AppCompatActivity() {
             Intent(this,Authentification::class.java).also {
                 startActivity(it)
             }
+            finish()
 
         }
         if (item.itemId==R.id.idsettings){

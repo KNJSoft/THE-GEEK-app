@@ -14,7 +14,7 @@
         android:id="@+id/profile"/>
     <item
         android:title="settings"
-        android:id="@+id/settings"
+        android:id="@+id/set_home"
         android:icon="@drawable/icon_setting"
         app:showAsAction="always"/>
 </menu>

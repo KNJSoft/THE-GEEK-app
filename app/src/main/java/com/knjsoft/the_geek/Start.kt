@@ -1,5 +1,6 @@
 package com.knjsoft.the_geek
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,10 +12,21 @@ class Start : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
         Handler(Looper.getMainLooper()).postDelayed({
-            Intent(this, Anonyme::class.java).also {
-                startActivity(it)
+            val sharedPreferences = getSharedPreferences("THE-GEEK", Context.MODE_PRIVATE)
+            val isLoggedIn = sharedPreferences.getBoolean("is_authenticated", false)
+
+            if (isLoggedIn) {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }else {
+
+
+                Intent(this, Anonyme::class.java).also {
+                    startActivity(it)
+                }
+                finish()
             }
-            finish()
         }, 5000)
     }
 }
