@@ -4,11 +4,18 @@
         android:id="@+id/menu_set"
         android:title="Paramètres" />
     <item
+        android:id="@+id/menu_profile"
+        android:title="Profile" />
+    <item
         android:id="@+id/menu_mes"
         android:title="Messages" />
     <item
         android:id="@+id/menu_cours"
         android:title="Cours" />
+    <item
+        android:id="@+id/menu_contact"
+        android:title="Aide" />
+
     <item
         android:id="@+id/menu_logout"
         android:title="Se Déconnecter" />

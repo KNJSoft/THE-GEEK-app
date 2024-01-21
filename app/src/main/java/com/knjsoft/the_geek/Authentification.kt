@@ -10,6 +10,8 @@ import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
@@ -25,6 +27,8 @@ class Authentification : AppCompatActivity() {
     lateinit var Loging: MaterialButton
     lateinit var Username:TextInputEditText
     lateinit var Password: TextInputEditText
+    lateinit var progress: ProgressBar
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentification)
@@ -33,11 +37,16 @@ class Authentification : AppCompatActivity() {
         Loging=findViewById(R.id.btn_auth)
         Username=findViewById(R.id.username_auth)
         Password=findViewById(R.id.Password_auth)
+        progress=findViewById(R.id.progress_auth)
 
 
         //debut send post request
 
         Loging.setOnClickListener {
+            progress.setVisibility(View.VISIBLE)
+            Loging.isEnabled=false
+            Username.isEnabled=false
+            Password.isEnabled=false
             val username=Username.text.toString().trim()
             val password=Password.text.toString().trim()
             val jsonData = JSONObject()
@@ -49,6 +58,10 @@ class Authentification : AppCompatActivity() {
             val request = JsonObjectRequest(
                 Request.Method.POST, url, jsonData,
                 { response ->
+                    progress.setVisibility(View.GONE)
+                    Loging.isEnabled=true
+                    Username.isEnabled=true
+                    Password.isEnabled=true
                     val editor = sharedPreferences.edit()
                     editor.putBoolean("is_authenticated", true)
                     editor.apply()
@@ -62,7 +75,15 @@ class Authentification : AppCompatActivity() {
                         view.setBackgroundColor(Color.GREEN)
                     }
                     toast.show()
+                    val username = response.getString("username")
+                    val email = response.getString("email")
+                    val nom = response.getString("nom")
+                    val prenom = response.getString("prenom")
                     Intent(this,MainActivity::class.java).also {
+                        it.putExtra("username", username)
+                        it.putExtra("email",email)
+                        it.putExtra("nom",nom)
+                        it.putExtra("prenom",prenom)
                         startActivity(it)
                     }
                     finish()
@@ -71,6 +92,10 @@ class Authentification : AppCompatActivity() {
 
                 },
                 { error ->
+                    progress.setVisibility(View.GONE)
+                    Loging.isEnabled=true
+                    Username.isEnabled=true
+                    Password.isEnabled=true
                     if (error.networkResponse != null) {
                         val statusCode = error.networkResponse.statusCode
                         val errorResponse = String(error.networkResponse.data)

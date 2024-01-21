@@ -8,11 +8,6 @@
         app:showAsAction="always"
         android:id="@+id/search"/>
     <item
-        android:title="profile"
-        android:icon="@drawable/icon_profile"
-        app:showAsAction="always"
-        android:id="@+id/profile"/>
-    <item
         android:title="settings"
         android:id="@+id/set_home"
         android:icon="@drawable/icon_setting"

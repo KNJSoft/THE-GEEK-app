@@ -14,12 +14,22 @@
         android:theme="@style/Theme.THEGEEK"
         tools:targetApi="31">
         <activity
+            android:name=".Profile"
+            android:parentActivityName=".MainActivity"
+            android:label="Profile"
+            android:exported="false"
+            android:theme="@style/home" />
+        <activity
             android:name=".Search"
-            android:exported="false" />
+            android:parentActivityName=".MainActivity"
+            android:label="Recherche"
+            android:exported="false"
+            android:theme="@style/home"/>
         <activity
             android:name=".Anonyme"
             android:exported="false"
-            android:label="THE-GEEK" />
+            android:label="THE-GEEK"
+            android:theme="@style/home"/>
         <activity
             android:name=".Settings"
             android:exported="false"

@@ -30,11 +30,6 @@ class MainActivity : AppCompatActivity() {
 
 
         }
-        if (item.itemId==R.id.profile){
-            Intent(this,Settings::class.java).also {
-                startActivity(it)
-            }
-        }
         if (item.itemId==R.id.search){
             Intent(this,Search::class.java).also {
                 startActivity(it)
@@ -53,6 +48,20 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_set -> {
 
                     Intent(this,Settings::class.java).also {
+                        startActivity(it)
+                    }
+                    true
+                }
+                R.id.menu_profile -> {
+                    val username = intent.getStringExtra("username")
+                    val email = intent.getStringExtra("email")
+                    val nom = intent.getStringExtra("nom")
+                    val prenom = intent.getStringExtra("prenom")
+                    Intent(this,Profile::class.java).also {
+                        it.putExtra("username", username)
+                        it.putExtra("email",email)
+                        it.putExtra("nom",nom)
+                        it.putExtra("prenom",prenom)
                         startActivity(it)
                     }
                     true

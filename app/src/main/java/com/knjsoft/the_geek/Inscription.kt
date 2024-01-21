@@ -12,6 +12,8 @@ import com.google.android.material.textfield.TextInputEditText
 import org.json.JSONObject
 import android.util.Log
 import android.view.Gravity
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
@@ -28,6 +30,7 @@ class Inscription : AppCompatActivity() {
     lateinit var Email:TextInputEditText
     lateinit var Password:TextInputEditText
     lateinit var Cpassword:TextInputEditText
+    lateinit var progress: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +40,14 @@ class Inscription : AppCompatActivity() {
         Email=findViewById(R.id.Mail)
         Password=findViewById(R.id.Password)
         Cpassword=findViewById(R.id.confirpassword)
+        progress=findViewById(R.id.progress)
         signup.setOnClickListener {
+            progress.setVisibility(View.VISIBLE)
+            signup.isEnabled=false
+            Username.isEnabled=false
+            Email.isEnabled=false
+            Password.isEnabled=false
+            Cpassword.isEnabled=false
             val username=Username.text.toString().trim()
             val email=Email.text.toString().trim()
             val password=Password.text.toString().trim()
@@ -52,6 +62,12 @@ class Inscription : AppCompatActivity() {
             val url = "http://192.168.1.106:8000/api/post/signup" // Remplacer par l'URL de votre API Django
             val request = JsonObjectRequest(Request.Method.POST, url, jsonData,
                 { response ->
+                    progress.setVisibility(View.GONE)
+                    signup.isEnabled=true
+                    Username.isEnabled=true
+                    Email.isEnabled=true
+                    Password.isEnabled=true
+                    Cpassword.isEnabled=true
                     val successMessage = response.getString("msg")
                     Log.d("SignupActivity", "Inscription réussie  django: $successMessage")
                     Log.d("SignupActivity", "Inscription réussie!")
@@ -62,6 +78,7 @@ class Inscription : AppCompatActivity() {
                         view.setBackgroundColor(Color.GREEN)
                     }
                     toast.show()
+
                     Intent(this,Authentification::class.java).also {
                         startActivity(it)
                     }
@@ -70,6 +87,12 @@ class Inscription : AppCompatActivity() {
 
                 },
                 { error ->
+                    progress.setVisibility(View.GONE)
+                    signup.isEnabled=true
+                    Username.isEnabled=true
+                    Email.isEnabled=true
+                    Password.isEnabled=true
+                    Cpassword.isEnabled=true
                     if (error.networkResponse != null) {
                         val statusCode = error.networkResponse.statusCode
                         val errorResponse = String(error.networkResponse.data)
@@ -85,6 +108,7 @@ class Inscription : AppCompatActivity() {
                                 view.setBackgroundColor(Color.RED)
                             }
                             toast.show()
+
                             // Utiliser le message d'erreur comme vous le souhaitez
                         } catch (e: JSONException) {
                             //debut except
@@ -98,6 +122,7 @@ class Inscription : AppCompatActivity() {
                             toast.show()
                             //fin
                             Log.e("SignupActivity", "Erreur lors de l'analyse de la réponse JSON : $e")
+
                         }
                     }
 

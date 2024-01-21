@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Profile">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.4"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/pp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/icon_profile"
+                android:layout_marginBottom="50dp"
+                android:scaleType="centerCrop"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/usernamepro"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    app:boxBackgroundColor="@color/white"
+                    android:background="@color/white"
+                    android:enabled="false"
+                    android:clickable="false"
+                    android:hint="Nom d'utilisateur"
+                    android:inputType="text"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/Nom_pro"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@color/white"
+                    android:hint="Nom"
+                    android:inputType="text"
+                    app:boxBackgroundColor="@color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/Prenom"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@color/white"
+                    android:hint="Prenom"
+                    android:inputType="text"
+                    app:boxBackgroundColor="@color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/Mail_pro"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    app:boxBackgroundColor="@color/white"
+                    android:background="@color/white"
+                    android:hint="Email"
+                    android:enabled="false"
+                    android:clickable="false"
+                    android:layout_marginTop="24dp"
+                    android:inputType="textEmailAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/mdp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    app:boxBackgroundColor="@color/white"
+                    android:background="@color/white"
+                    android:layout_marginTop="24dp"
+                    android:hint="Ancien Mot de passe"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/Noms"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    app:boxBackgroundColor="@color/white"
+                    android:background="@color/white"
+                    android:layout_marginTop="24dp"
+                    android:hint="Nouveau Mot de passe"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/enrs"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:text="Enregistrer"
+                app:cornerRadius="4dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
