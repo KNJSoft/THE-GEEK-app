@@ -16,22 +16,59 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.android.volley.*
-import com.android.volley.toolbox.BaseHttpStack
-
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-
-
 import org.json.JSONException
-
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.OkHttpClient
-
-import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 import java.io.IOException
-
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 class Inscription : AppCompatActivity() {
+
+
+
+
+
+
+    object RetrofitClient {
+
+        private const val BASE_URL = "http://192.168.1.106:8000"
+
+        private val retrofit: Retrofit by lazy {
+            Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+
+        fun getSignupService(): SignupService {
+            return retrofit.create(SignupService::class.java)
+        }
+    }
+
+    interface SignupService {
+
+        @POST("api/post/signup")
+        fun signup(
+            @Body signupRequest: SignupRequest
+        ): Call<SignupResponse>
+    }
+
+    data class SignupRequest(
+        val username: String,
+        val email: String,
+        val password: String,
+        val cpassword: String
+    )
+
+    data class SignupResponse(
+        val success: Boolean,
+        val message: String
+    )
 
     lateinit var signup: MaterialButton
     lateinit var Username:TextInputEditText
@@ -55,110 +92,146 @@ class Inscription : AppCompatActivity() {
             val email=Email.text.toString().trim()
             val password=Password.text.toString().trim()
             val cpassword=Cpassword.text.toString().trim()
-            val jsonData = JSONObject()
-            jsonData.put("username", username)
-            jsonData.put("email", email)
-            jsonData.put("password", password)
-            jsonData.put("cpassword", cpassword)
-            val queue = Volley.newRequestQueue(this)
-            val url = "http://192.168.1.106:8000/api/post/signup"
             progress.setVisibility(View.VISIBLE)
             signup.isEnabled=false
             Username.isEnabled=false
             Email.isEnabled=false
             Password.isEnabled=false
             Cpassword.isEnabled=false
-            val request = JsonObjectRequest.Builder()
-                .setMethod(Request.Method.POST)
-                .setUrl(url)
-                .setJsonObject(jsonData)
-                .setSuccessListener { response ->
+            val retrofitClient = RetrofitClient
+            val signupService = retrofitClient.getSignupService()
+            val signupRequest = SignupRequest(
+                username,
+                email,
+                password,
+                cpassword,
+            )
+            val call = signupService.signup(signupRequest)
+            call.enqueue(object : Callback<SignupResponse> {
+                override fun onResponse(call: Call<SignupResponse>, response: Response<SignupResponse>) {
+                    if (response.isSuccessful) {
+                        val signupResponse =
+                            response.body() ?: throw IllegalStateException("Response body is null")
 
-                    signup.isEnabled=true
-                    Username.isEnabled=true
-                    Email.isEnabled=true
-                    Password.isEnabled=true
-                    Cpassword.isEnabled=true
+                        if (signupResponse.success) {
+                            signup.isEnabled = true
+                            Username.isEnabled = true
+                            Email.isEnabled = true
+                            Password.isEnabled = true
+                            Cpassword.isEnabled = true
+                            progress.setVisibility(View.GONE)
+                            Log.d("SignupActivity", "Inscription réussie  django")
+                            Log.d("SignupActivity", "Inscription réussie!")
+                            val toast = Toast.makeText(
+                                applicationContext,
+                                signupResponse.message,
+                                Toast.LENGTH_SHORT * 5
+                            )
+                            toast.setGravity(
+                                Gravity.TOP or Gravity.CENTER,
+                                0,
+                                resources.getDimensionPixelOffset(R.dimen.toast_margin_top)
+                            )
+                            val view = toast.view
+                            if (view != null) {
+                                view.setBackgroundColor(Color.GREEN)
+                            }
+                            toast.show()
+
+                            Intent(applicationContext, Authentification::class.java).also {
+                                startActivity(it)
+                            }
+                            finish()
+                        } else {
+                            //val errorMessage = response.errorBody()?.let { JSONObject["error"] as String } ?: "Erreur inconnue."
+                            signup.isEnabled = true
+                            Username.isEnabled = true
+                            Email.isEnabled = true
+                            Password.isEnabled = true
+                            Cpassword.isEnabled = true
+                            progress.setVisibility(View.GONE)
+
+                            Log.e("SignupActivity", "djannnnnngo: ")
+                            val toast = Toast.makeText(
+                                applicationContext,
+                                "erreur inconnue!!!!!!",
+                                Toast.LENGTH_SHORT * 5
+                            )
+                            toast.setGravity(
+                                Gravity.TOP or Gravity.CENTER,
+                                0,
+                                resources.getDimensionPixelOffset(R.dimen.toast_margin_top)
+                            )
+                            val view = toast.view
+                            if (view != null) {
+
+                                view.setBackgroundColor(Color.RED)
+                            }
+                            toast.show()
+                        }
+                    } else {
+                        val errorMessage = response.errorBody()?.string()?.let { JSONObject(it)["error"] as String } ?: "Erreur inconnue."
+                        println(errorMessage)
+                            signup.isEnabled = true
+                            Username.isEnabled = true
+                            Email.isEnabled = true
+                            Password.isEnabled = true
+                            Cpassword.isEnabled = true
+                            progress.setVisibility(View.GONE)
+
+                            Log.e("SignupActivity", "Erreur lors de l'inscription djannnnnngo: ")
+                            val toast = Toast.makeText(
+                                applicationContext,
+                                errorMessage,
+                                Toast.LENGTH_SHORT * 5
+                            )
+                            toast.setGravity(
+                                Gravity.TOP or Gravity.CENTER,
+                                0,
+                                resources.getDimensionPixelOffset(R.dimen.toast_margin_top)
+                            )
+                            val view = toast.view
+                            if (view != null) {
+
+                                view.setBackgroundColor(Color.RED)
+                            }
+                            toast.show()
+                    }
+
+                }
+                override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
+                    signup.isEnabled = true
+                    Username.isEnabled = true
+                    Email.isEnabled = true
+                    Password.isEnabled = true
+                    Cpassword.isEnabled = true
                     progress.setVisibility(View.GONE)
-                    val successMessage = response.getString("msg")
-                    Log.d("SignupActivity", "Inscription réussie  django: $successMessage")
-                    Log.d("SignupActivity", "Inscription réussie!")
-                    val toast = Toast.makeText(this, successMessage, Toast.LENGTH_SHORT*5)
-                    toast.setGravity(Gravity.TOP or Gravity.CENTER, 0, resources.getDimensionPixelOffset(R.dimen.toast_margin_top))
+
+                    Log.e("SignupActivity", "Erreur lors de l'inscription djannnnnngo: ")
+                    val toast = Toast.makeText(
+                        applicationContext,
+                        "La connexion au serveur a échouée!!!!!!",
+                        Toast.LENGTH_SHORT * 5
+                    )
+                    toast.setGravity(
+                        Gravity.TOP or Gravity.CENTER,
+                        0,
+                        resources.getDimensionPixelOffset(R.dimen.toast_margin_top)
+                    )
                     val view = toast.view
                     if (view != null) {
-                        view.setBackgroundColor(Color.GREEN)
+
+                        view.setBackgroundColor(Color.RED)
                     }
                     toast.show()
-
-                    Intent(this,Authentification::class.java).also {
-                        startActivity(it)
-                    }
-                    finish()
-                    queue.stop()
+                }
+            })
 
 
-                },
-            .setErrorListener { error ->
-
-                    signup.isEnabled=true
-                    Username.isEnabled=true
-                    Email.isEnabled=true
-                    Password.isEnabled=true
-                    Cpassword.isEnabled=true
-                    progress.setVisibility(View.GONE)
-                    if (error.networkResponse != null) {
-                        val statusCode = error.networkResponse.statusCode
-                        val errorResponse = String(error.networkResponse.data)
-                        try {
-                            val jsonResponse = JSONObject(errorResponse)
-                            val errorMessage = jsonResponse.getString("error")
-                            Log.e("SignupActivity", "Erreur lors de l'inscription djannnnnngo: $errorMessage")
-                            val toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT*5)
-                            toast.setGravity(Gravity.TOP or Gravity.CENTER, 0, resources.getDimensionPixelOffset(R.dimen.toast_margin_top))
-                            val view = toast.view
-                            if (view != null) {
-
-                                view.setBackgroundColor(Color.RED)
-                            }
-                            toast.show()
-
-                            // Utiliser le message d'erreur comme vous le souhaitez
-                        } catch (e: JSONException) {
-                            //debut except
-                            val toast = Toast.makeText(this, "La connexion au serveur a échouer!!!", Toast.LENGTH_SHORT*5)
-                            toast.setGravity(Gravity.TOP or Gravity.CENTER, 0, resources.getDimensionPixelOffset(R.dimen.toast_margin_top))
-                            val view = toast.view
-                            if (view != null) {
-
-                                view.setBackgroundColor(Color.RED)
-                            }
-                            toast.show()
-                            //fin
-                            Log.e("SignupActivity", "Erreur lors de l'analyse de la réponse JSON : $e")
-
-                        }
-                    }
-
-
-                    // Gérer les erreurs de l'API ici
-                    //Log.e("SignupActivity", "Erreur lors de l'inscription: " + error.message)
-                    queue.stop()
-                })
-            // Désactiver le réessai automatique
-                request.retryPolicy = DefaultRetryPolicy(
-                0, // Nombre maximal de tentatives (0 signifie aucune tentative de réessai)
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, // Nombre maximal de réessais
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT // Facteur d'attente entre les réessais
-                )
-//            val status=request.body.get(0)
-//            println(status)
-            queue.add(request)
 
         }
-
-
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId==R.id.loging){
